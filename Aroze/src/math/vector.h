@@ -25,6 +25,15 @@ struct Vector3f
 		return Vector3f(x - other.x, y - other.y, z - other.z);
 	}
 
+	Vector3f operator-() const {
+		return Vector3f(-x, -y, -z);
+	}
+
+	Vector3f operator+ (const Vector3f& other)
+	{
+		return Vector3f(x + other.x, y + other.y, z + other.z);
+	}
+
 	Vector3f operator*(const double& other)
 	{
 		return Vector3f(x * other, y * other, z * other);
@@ -32,12 +41,20 @@ struct Vector3f
 
 	// 归一化方法
 	void normalize() {
-		float length = std::sqrt(x * x + y * y + z * z);
+		double length = std::sqrt(x * x + y * y + z * z);
 		if (length > 0) { // 防止除以零
 			x /= length;
 			y /= length;
 			z /= length;
 		}
 	}
+
+	// 友元函数形式的运算符重载，用于 scalar * object
+	friend Vector3f operator*(double scalar, const Vector3f& vec);
 };
+
+Vector3f operator*(double scalar, const Vector3f& vec)
+{
+	return Vector3f(scalar * vec.x, scalar * vec.y, scalar * vec.z);
+}
 
